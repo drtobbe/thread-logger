@@ -1,15 +1,8 @@
-# This is my README
-
 #
-# Create Setup Commands:
+# Clone:
 #
-> mvn archetype:generate -DgroupId=se.util.eif.logging -DartifactId=eif-logger -Dversion=1.0.0-SNAPSHOT
-
-#
-# Eclipse:
-#
-> cd eif-logger
-> mvn eclipse:eclipse
+> git clone https://github.com/drtobbe/thread-logger.git
+> cd thread-logger
 
 #
 # Maven 3
@@ -19,10 +12,9 @@
 > mvn install
 
 #
-# Generate EifMetaData members
+# Eclipse:
 #
-grep protected target/generated-sources/xjc/se/util/namespaces/eif/logging/auditlog/_0001/AuditLog.java > members.txt
-grep protected target/generated-sources/xjc/se/util/namespaces/eif/logging/systemlog/_0001/SystemLog.java >> members.txt
-sort members.txt
+> mvn eclipse:eclipse
+
 
 
