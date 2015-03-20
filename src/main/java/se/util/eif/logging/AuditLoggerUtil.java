@@ -20,10 +20,12 @@ import se.util.namespaces.eif.logging.auditlog._0001.EnLogLevel;
 public abstract class AuditLoggerUtil extends EifLoggerUtil {
     private static final String AUDITLOG = "auditlog.";
     private static JAXBContext auditLogContext;
+    private static ObjectMapper mapper; 
 
     static {
         try {
             auditLogContext = JAXBContext.newInstance(AuditLog.class);
+            mapper = new ObjectMapper();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -242,7 +244,6 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         return auditLog;
     }
 
-    private static final ObjectMapper mapper = new ObjectMapper();
     private static String marshall(AuditLog auditLog) {
         if (auditLogContext != null) {
             switch (getFormat()) {

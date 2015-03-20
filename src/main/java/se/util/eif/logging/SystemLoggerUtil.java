@@ -20,10 +20,12 @@ import se.util.namespaces.eif.logging.systemlog._0001.SystemLog;
 public abstract class SystemLoggerUtil extends EifLoggerUtil {
     private static final String SYSTEMLOG = "systemlog.";
     private static JAXBContext syslogContext;
+    private static ObjectMapper mapper;
 
     static {
         try {
             syslogContext = JAXBContext.newInstance(SystemLog.class);
+            mapper = new ObjectMapper();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -217,7 +219,6 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         return sysLog;
     }
 
-    private static final ObjectMapper mapper = new ObjectMapper();
     private static String marshall(SystemLog systemLog) {
         if (syslogContext != null) {
             switch (getFormat()) {
