@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:Namespaces.Util.Se:Eif:Logging:SystemLog:0001" targetNamespace="urn:Namespaces.Util.Se:Eif:Logging:SystemLog:0001" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0001">
+	<xs:element name="SystemLog">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Timestamp" type="xs:dateTime"/>
+				<xs:element name="LogItemId" type="xs:string"/>
+				<xs:element name="LogLevel" type="tns:enLogLevel"/>
+				<xs:element name="ErrorMessage" type="xs:string"/>
+				<xs:element name="ErrorCode" type="xs:string" minOccurs="0"/>
+				<xs:element name="ErrorClassification" type="xs:string"/>
+				<xs:element name="DebugInformation" type="xs:string" minOccurs="0"/>
+				<xs:element name="StackTrace" type="xs:string" minOccurs="0"/>
+				<xs:element name="ProbableCause" type="xs:string" minOccurs="0"/>
+				<xs:element name="ProposedAction" type="xs:string" minOccurs="0"/>
+				<xs:element name="SystemName" type="xs:string"/>
+				<xs:element name="FunctionalModuleName" type="xs:string"/>
+				<xs:element name="FunctionalModuleInstanceId" type="xs:string"/>
+				<xs:element name="SourceName" type="xs:string" minOccurs="0"/>
+				<xs:element name="SourceType" type="xs:string" minOccurs="0"/>
+				<xs:element name="Hostname" type="xs:string" minOccurs="0"/>
+				<xs:element name="BusinessProcessName" type="xs:string" minOccurs="0"/>
+				<xs:element name="BusinessProcessInstanceId" type="xs:string" minOccurs="0"/>
+				<xs:element name="BusinessPartName" type="xs:string" minOccurs="0"/>
+				<xs:element name="BusinessPartInstanceId" type="xs:string" minOccurs="0"/>
+				<xs:element name="BusinessFragmentName" type="xs:string" minOccurs="0"/>
+				<xs:element name="BusinessFragmentInstanceId" type="xs:string" minOccurs="0"/>
+				<xs:element name="LinkedLogItemId" type="xs:string" minOccurs="0"/>
+				<xs:element name="AuditLogItemId" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="enLogLevel">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Fatal"/>
+			<xs:enumeration value="Error"/>
+			<xs:enumeration value="Warn"/>
+			<xs:enumeration value="Info"/>
+			<xs:enumeration value="Debug"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
