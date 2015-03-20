@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -241,17 +242,34 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         return auditLog;
     }
 
+    private static final ObjectMapper mapper = new ObjectMapper();
     private static String marshall(AuditLog auditLog) {
         if (auditLogContext != null) {
-            try {
-                Marshaller auditMarshaller = auditLogContext.createMarshaller();
-                auditMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-                StringWriter sw = new StringWriter();
-                auditMarshaller.marshal(auditLog, sw);
-                return sw.toString();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return e.getMessage();
+            switch (getFormat()) {
+            case XML:
+                try {
+                    Marshaller auditMarshaller = auditLogContext.createMarshaller();
+                    auditMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                    StringWriter sw = new StringWriter();
+                    auditMarshaller.marshal(auditLog, sw);
+                    return sw.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return e.getMessage();
+                }
+            case CSV:
+                return "CSV";
+            case JSON:
+                try {
+                    StringWriter sw = new StringWriter();
+                    mapper.writeValue(sw, auditLog);
+                    return sw.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return e.getMessage();
+                }
+            default:
+                return "Error: unknown format: " + getFormat();
             }
         } else {
             return "Error: auditLogContext is null!";

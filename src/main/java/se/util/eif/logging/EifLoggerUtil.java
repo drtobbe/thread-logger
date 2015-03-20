@@ -12,6 +12,20 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 abstract class EifLoggerUtil {
     private static final ThreadLocal<EifMetaData> threadLocal = new ThreadLocal<EifMetaData>();
+    private static final ThreadLocal<Format> formatLocal = new ThreadLocal<Format>();
+
+    public static void useFormat(Format format) {
+        formatLocal.set(format);
+    }
+
+    public static Format getFormat() {
+        Format format = formatLocal.get();
+        if (format == null) {
+            format = Format.XML;
+            formatLocal.set(format);
+        }
+        return format;
+    }
 
     protected static XMLGregorianCalendar getXMLGregorianCalendarNow() {
         try {

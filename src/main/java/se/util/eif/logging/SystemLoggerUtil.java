@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -216,17 +217,34 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         return sysLog;
     }
 
+    private static final ObjectMapper mapper = new ObjectMapper();
     private static String marshall(SystemLog systemLog) {
         if (syslogContext != null) {
-            try {
-                Marshaller syslogMarshaller = syslogContext.createMarshaller();
-                syslogMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-                StringWriter sw = new StringWriter();
-                syslogMarshaller.marshal(systemLog, sw);
-                return sw.toString();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return e.getMessage();
+            switch (getFormat()) {
+            case XML:
+                try {
+                    Marshaller syslogMarshaller = syslogContext.createMarshaller();
+                    syslogMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                    StringWriter sw = new StringWriter();
+                    syslogMarshaller.marshal(systemLog, sw);
+                    return sw.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return e.getMessage();
+                }
+            case CSV:
+                return "CSV";
+            case JSON:
+                try {
+                    StringWriter sw = new StringWriter();
+                    mapper.writeValue(sw, systemLog);
+                    return sw.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return e.getMessage();
+                }
+            default:
+                return "Error: unknown format: " + getFormat();
             }
         } else {
             return "Error: syslogContext is null!";
