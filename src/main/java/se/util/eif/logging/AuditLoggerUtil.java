@@ -258,7 +258,12 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
                     return e.getMessage();
                 }
             case CSV:
-                return "CSV";
+                try {
+                    return CSVWriter.produceCsvData(auditLog);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return e.getMessage();
+                }
             case JSON:
                 try {
                     StringWriter sw = new StringWriter();
