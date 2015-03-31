@@ -2,15 +2,13 @@ package se.util.eif.logging;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author drtobbe
  */
 public class FormatTest {
-    private static AuditLogger alog = AuditLoggerUtil.getLogger(EifLoggerUtilTest.class);
-    private static Logger logse = LoggerFactory.getLogger(FormatTest.class);
+    private static AuditLogger alog = LoggerFactory.getAuditLogger(FormatTest.class);
+    private static SystemLogger slog = LoggerFactory.getSystemLogger(FormatTest.class);
     private EifMetaData metaData;
 
     @Before
@@ -33,9 +31,9 @@ public class FormatTest {
 
     @Test
     public void testExceptionJSON() {
-        //SystemLoggerUtil.useFormat(Format.JSON);
-        SystemLoggerUtil.application(logse, "This is a info", metaData);
-        SystemLoggerUtil.error(logse, "This is a error", new Exception("This is a Exception message"));
+        slog.useFormat(Format.JSON);
+        slog.application("This is a info", metaData);
+        slog.error("This is a error", new Exception("This is a Exception message"));
     }
 
     @Test

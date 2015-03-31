@@ -18,17 +18,14 @@ import se.util.namespaces.eif.logging.auditlog._0001.EnLogLevel;
  * @author drtobbe
  */
 public class AuditLoggerUtil extends EifLoggerUtil implements AuditLogger {
+    private static final ThreadLocal<Format> formatLocal = new ThreadLocal<Format>();
     private static final String AUDITLOG = "auditlog.";
     private static JAXBContext auditLogContext;
     private static ObjectMapper mapper;
     private Logger clog;
 
-    private AuditLoggerUtil(Class<?> clazz) {
+    AuditLoggerUtil(Class<?> clazz) {
         this.clog = LoggerFactory.getLogger(AUDITLOG + clazz.getName());
-    }
-
-    public static AuditLogger getLogger(Class<?> clazz) {
-        return new AuditLoggerUtil(clazz);
     }
 
     static {
@@ -233,7 +230,6 @@ public class AuditLoggerUtil extends EifLoggerUtil implements AuditLogger {
         }
     }
 
-    private static final ThreadLocal<Format> formatLocal = new ThreadLocal<Format>();
     public void useFormat(Format format) {
         formatLocal.set(format);
     }

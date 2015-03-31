@@ -17,10 +17,16 @@ import se.util.namespaces.eif.logging.systemlog._0001.SystemLog;
 /**
  * @author drtobbe
  */
-public abstract class SystemLoggerUtil extends EifLoggerUtil {
+public class SystemLoggerUtil extends EifLoggerUtil implements SystemLogger {
+    private static final ThreadLocal<Format> formatLocal = new ThreadLocal<Format>();
     private static final String SYSTEMLOG = "systemlog.";
     private static JAXBContext syslogContext;
     private static ObjectMapper mapper;
+    private Logger clog;
+
+    SystemLoggerUtil(Class<?> clazz) {
+        this.clog = LoggerFactory.getLogger(SYSTEMLOG + clazz.getName());
+    }
 
     static {
         try {
@@ -31,14 +37,11 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * SystemLog a message at the INFO level and initialize the EifMetaData on the current thread
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     * @param metaData the metaData to be cloned
+    /* (non-Javadoc)
+     * @see se.util.eif.logging.SystemLogger#application(java.lang.String, se.util.eif.logging.EifMetaData)
      */
-    public static void application(Logger clog, String msg, EifMetaData metaData) {
+    @Override
+    public void application(String msg, EifMetaData metaData) {
         initialize(metaData);
         Logger log = LoggerFactory.getLogger(SYSTEMLOG + clog.getName());
         if (log.isInfoEnabled()) {
@@ -49,13 +52,11 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * SystemLog a message at the DEBUG level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
+    /* (non-Javadoc)
+     * @see se.util.eif.logging.SystemLogger#debug(java.lang.String)
      */
-    public static void debug(Logger clog, String msg) {
+    @Override
+    public void debug(String msg) {
         Logger log = LoggerFactory.getLogger(SYSTEMLOG + clog.getName());
         if (log.isDebugEnabled()) {
             SystemLog sysLog = populateSystemLog(msg);
@@ -65,13 +66,11 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * SystemLog a message at the INFO level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
+    /* (non-Javadoc)
+     * @see se.util.eif.logging.SystemLogger#info(java.lang.String)
      */
-    public static void info(Logger clog, String msg) {
+    @Override
+    public void info(String msg) {
         Logger log = LoggerFactory.getLogger(SYSTEMLOG + clog.getName());
         if (log.isInfoEnabled()) {
             SystemLog sysLog = populateSystemLog(msg);
@@ -81,13 +80,11 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * SystemLog a message at the WARN level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
+    /* (non-Javadoc)
+     * @see se.util.eif.logging.SystemLogger#warn(java.lang.String)
      */
-    public static void warn(Logger clog, String msg) {
+    @Override
+    public void warn(String msg) {
         Logger log = LoggerFactory.getLogger(SYSTEMLOG + clog.getName());
         if (log.isWarnEnabled()) {
             SystemLog sysLog = populateSystemLog(msg);
@@ -97,13 +94,11 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * SystemLog a message at the ERROR level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
+    /* (non-Javadoc)
+     * @see se.util.eif.logging.SystemLogger#error(java.lang.String)
      */
-    public static void error(Logger clog, String msg) {
+    @Override
+    public void error(String msg) {
         Logger log = LoggerFactory.getLogger(SYSTEMLOG + clog.getName());
         if (log.isErrorEnabled()) {
             SystemLog sysLog = populateSystemLog(msg);
@@ -113,15 +108,11 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * SystemLog an exception (throwable) at the ERROR level with an
-     * accompanying message. 
-     * 
-     * @param log the logger to be used
-     * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
+    /* (non-Javadoc)
+     * @see se.util.eif.logging.SystemLogger#error(java.lang.String, java.lang.Throwable)
      */
-    public static void error(Logger clog, String msg, Throwable t) {
+    @Override
+    public void error(String msg, Throwable t) {
         Logger log = LoggerFactory.getLogger(SYSTEMLOG + clog.getName());
         if (log.isErrorEnabled()) {
             SystemLog sysLog = populateSystemLog(msg);
@@ -257,7 +248,10 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    private static final ThreadLocal<Format> formatLocal = new ThreadLocal<Format>();
+    /* (non-Javadoc)
+     * @see se.util.eif.logging.SystemLogger#useFormat(se.util.eif.logging.Format)
+     */
+    @Override
     public void useFormat(Format format) {
         formatLocal.set(format);
     }

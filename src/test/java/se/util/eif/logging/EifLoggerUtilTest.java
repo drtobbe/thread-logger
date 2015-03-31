@@ -2,15 +2,13 @@ package se.util.eif.logging;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author drtobbe
  */
 public class EifLoggerUtilTest {
-    private static AuditLogger alog = AuditLoggerUtil.getLogger(EifLoggerUtilTest.class);
-    private static Logger logse = LoggerFactory.getLogger(EifLoggerUtilTest.class);
+    private static AuditLogger alog = LoggerFactory.getAuditLogger(EifLoggerUtilTest.class);
+    private static SystemLogger slog = LoggerFactory.getSystemLogger(EifLoggerUtilTest.class);
     private EifMetaData metaData;
 
     @Before
@@ -33,8 +31,8 @@ public class EifLoggerUtilTest {
 
     @Test
     public void testException() {
-        SystemLoggerUtil.application(logse, "This is a info", metaData);
-        SystemLoggerUtil.error(logse, "This is a error", new Exception("This is a Exception message"));
+        slog.application("This is a info", metaData);
+        slog.error("This is a error", new Exception("This is a Exception message"));
     }
 
     @Test
@@ -51,7 +49,7 @@ public class EifLoggerUtilTest {
         int num = 10;
         for (int i = 0; i < num; i++) {
             alog.info("This is a Audit info: " + i);
-            SystemLoggerUtil.info(logse, "This is a System info: " + i);
+            slog.info("This is a System info: " + i);
         }
         System.out.println("###");
         System.out.println("elapsed: " + (System.currentTimeMillis() - start + 0f) / num + " millis/log");

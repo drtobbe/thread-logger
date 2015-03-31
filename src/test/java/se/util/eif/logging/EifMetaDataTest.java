@@ -2,17 +2,12 @@ package se.util.eif.logging;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import se.util.eif.logging.EifMetaData;
-import se.util.eif.logging.SystemLoggerUtil;
 
 /**
  * @author drtobbe
  */
 public class EifMetaDataTest {
-    private static Logger log = LoggerFactory.getLogger(EifMetaDataTest.class);
+    private static SystemLogger slog = LoggerFactory.getSystemLogger(EifMetaDataTest.class);
 
     @Test
     public void test() {
@@ -27,7 +22,7 @@ public class EifMetaDataTest {
         Assert.assertEquals("SysNam", data.getSystemName());
         Assert.assertEquals("FunModNam", data.getFunctionalModuleName());
         Assert.assertEquals("FunModInsId", data.getFunctionalModuleInstanceId());
-        SystemLoggerUtil.application(log, "setupPropertiesFromString", data);
+        slog.application("setupPropertiesFromString", data);
     }
 
 }
