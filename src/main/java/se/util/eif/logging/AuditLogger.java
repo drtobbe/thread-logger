@@ -1,5 +1,7 @@
 package se.util.eif.logging;
 
+import java.util.Map;
+
 public interface AuditLogger {
 
     public void useFormat(Format format);
@@ -53,6 +55,13 @@ public interface AuditLogger {
      * @param msg the message string to be logged
      */
     public void info(String msg);
+
+    /**
+     * AuditLog a message at the INFO level.
+     *
+     * @param map the key,value  to be logged
+     */
+    public void info(Map<String, Object> map);
 
     /**
      * AuditLog a message at the WARN level.

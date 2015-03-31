@@ -24,8 +24,8 @@ public class SystemLoggerUtil extends EifLoggerUtil implements SystemLogger {
     private static ObjectMapper mapper;
     private Logger clog;
 
-    SystemLoggerUtil(Class<?> clazz) {
-        this.clog = LoggerFactory.getLogger(SYSTEMLOG + clazz.getName());
+    SystemLoggerUtil(String name) {
+        this.clog = LoggerFactory.getLogger(SYSTEMLOG + name);
     }
 
     static {

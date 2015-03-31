@@ -2,6 +2,7 @@ package se.util.eif.logging;
 
 import java.io.StringWriter;
 import java.math.BigInteger;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.xml.bind.JAXBContext;
@@ -24,8 +25,8 @@ public class AuditLoggerUtil extends EifLoggerUtil implements AuditLogger {
     private static ObjectMapper mapper;
     private Logger clog;
 
-    AuditLoggerUtil(Class<?> clazz) {
-        this.clog = LoggerFactory.getLogger(AUDITLOG + clazz.getName());
+    AuditLoggerUtil(String name) {
+        this.clog = LoggerFactory.getLogger(AUDITLOG + name);
     }
 
     static {
@@ -113,6 +114,12 @@ public class AuditLoggerUtil extends EifLoggerUtil implements AuditLogger {
             auditLog.setDescription(msg);
             log.info(marshall(auditLog));
         }
+    }
+
+    @Override
+    public void info(Map<String, Object> map) {
+        // TODO Auto-generated method stub
+
     }
 
     @Override
