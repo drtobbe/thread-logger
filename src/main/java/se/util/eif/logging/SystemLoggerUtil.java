@@ -257,4 +257,18 @@ public abstract class SystemLoggerUtil extends EifLoggerUtil {
         }
     }
 
+    private static final ThreadLocal<Format> formatLocal = new ThreadLocal<Format>();
+    public void useFormat(Format format) {
+        formatLocal.set(format);
+    }
+
+    public static Format getFormat() {
+        Format format = formatLocal.get();
+        if (format == null) {
+            format = Format.XML;
+            formatLocal.set(format);
+        }
+        return format;
+    }
+
 }

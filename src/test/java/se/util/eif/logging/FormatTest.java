@@ -9,7 +9,8 @@ import org.slf4j.LoggerFactory;
  * @author drtobbe
  */
 public class FormatTest {
-    private static Logger log = LoggerFactory.getLogger(FormatTest.class);
+    private static AuditLogger alog = AuditLoggerUtil.getLogger(EifLoggerUtilTest.class);
+    private static Logger logse = LoggerFactory.getLogger(FormatTest.class);
     private EifMetaData metaData;
 
     @Before
@@ -26,22 +27,22 @@ public class FormatTest {
 
     @Test
     public void testXML() {
-        AuditLoggerUtil.infoBegin(log, "Begin testing auditlog", metaData);
-        AuditLoggerUtil.infoEnd(log, "End testing auditlog");
+        alog.infoBegin("Begin testing auditlog", metaData);
+        alog.infoEnd("End testing auditlog");
     }
 
     @Test
     public void testExceptionJSON() {
-        SystemLoggerUtil.useFormat(Format.JSON);
-        SystemLoggerUtil.application(log, "This is a info", metaData);
-        SystemLoggerUtil.error(log, "This is a error", new Exception("This is a Exception message"));
+        //SystemLoggerUtil.useFormat(Format.JSON);
+        SystemLoggerUtil.application(logse, "This is a info", metaData);
+        SystemLoggerUtil.error(logse, "This is a error", new Exception("This is a Exception message"));
     }
 
     @Test
     public void testErrorCSV() {
-        AuditLoggerUtil.useFormat(Format.CSV);
-        AuditLoggerUtil.infoBegin(log, "Begin testing", metaData);
-        AuditLoggerUtil.error(log, "This is a error", new Exception("This is a Exception message"));
+        alog.useFormat(Format.CSV);
+        alog.infoBegin("Begin testing", metaData);
+        alog.error("This is a error", new Exception("This is a Exception message"));
     }
 
 }

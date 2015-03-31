@@ -17,10 +17,19 @@ import se.util.namespaces.eif.logging.auditlog._0001.EnLogLevel;
 /**
  * @author drtobbe
  */
-public abstract class AuditLoggerUtil extends EifLoggerUtil {
+public class AuditLoggerUtil extends EifLoggerUtil implements AuditLogger {
     private static final String AUDITLOG = "auditlog.";
     private static JAXBContext auditLogContext;
-    private static ObjectMapper mapper; 
+    private static ObjectMapper mapper;
+    private Logger clog;
+
+    private AuditLoggerUtil(Class<?> clazz) {
+        this.clog = LoggerFactory.getLogger(AUDITLOG + clazz.getName());
+    }
+
+    public static AuditLogger getLogger(Class<?> clazz) {
+        return new AuditLoggerUtil(clazz);
+    }
 
     static {
         try {
@@ -31,13 +40,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the DEBUG level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void debug(Logger clog, String msg) {
+    @Override
+    public void debug(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isDebugEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -47,14 +51,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the INFO level and inticate the beginning of a request
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     * @param metaData the metaData to be cloned
-     */
-    public static void infoBegin(Logger clog, String msg, EifMetaData metaData) {
+    @Override
+    public void infoBegin(String msg, EifMetaData metaData) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         initialize(metaData);
         if (log.isInfoEnabled()) {
@@ -65,13 +63,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the INFO level and inticate the end of a request
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void infoEnd(Logger clog, String msg) {
+    @Override
+    public void infoEnd(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isInfoEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -81,13 +74,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the INFO level and inticate the end of a request with error
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void infoEndError(Logger clog, String msg) {
+    @Override
+    public void infoEndError(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isInfoEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -97,13 +85,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the INFO level and inticate start of a outbound request
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void infoSending(Logger clog, String msg) {
+    @Override
+    public void infoSending(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isInfoEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -113,13 +96,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the INFO level and inticate end of a outbound request
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void infoReceived(Logger clog, String msg) {
+    @Override
+    public void infoReceived(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isInfoEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -129,13 +107,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the INFO level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void info(Logger clog, String msg) {
+    @Override
+    public void info(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isInfoEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -145,13 +118,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the WARN level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void warn(Logger clog, String msg) {
+    @Override
+    public void warn(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isWarnEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -161,13 +129,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the ERROR level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void error(Logger clog, String msg) {
+    @Override
+    public void error(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isErrorEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -177,15 +140,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog an exception (throwable) at the ERROR level with an
-     * accompanying message. 
-     * 
-     * @param log the logger to be used
-     * @param msg the message accompanying the exception
-     * @param t the exception (throwable) to log
-     */
-    public static void error(Logger clog, String msg, Throwable t) {
+    @Override
+    public void error(String msg, Throwable t) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isErrorEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -198,13 +154,8 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    /**
-     * AuditLog a message at the FATAL level.
-     *
-     * @param log the logger to be used
-     * @param msg the message string to be logged
-     */
-    public static void fatal(Logger clog, String msg) {
+    @Override
+    public void fatal(String msg) {
         Logger log = LoggerFactory.getLogger(AUDITLOG + clog.getName());
         if (log.isErrorEnabled()) {
             AuditLog auditLog = populateAuditLog(msg);
@@ -214,7 +165,7 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         }
     }
 
-    private static AuditLog populateAuditLog(String msg) {
+    private AuditLog populateAuditLog(String msg) {
         AuditLog auditLog = new AuditLog();
         EifMetaData metaData = getEifMetaData();
         auditLog.setBusinessFragmentInstanceId(metaData.getBusinessFragmentInstanceId());
@@ -280,6 +231,20 @@ public abstract class AuditLoggerUtil extends EifLoggerUtil {
         } else {
             return "Error: auditLogContext is null!";
         }
+    }
+
+    private static final ThreadLocal<Format> formatLocal = new ThreadLocal<Format>();
+    public void useFormat(Format format) {
+        formatLocal.set(format);
+    }
+
+    public static Format getFormat() {
+        Format format = formatLocal.get();
+        if (format == null) {
+            format = Format.XML;
+            formatLocal.set(format);
+        }
+        return format;
     }
 
 }

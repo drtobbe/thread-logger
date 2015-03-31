@@ -5,16 +5,12 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.util.eif.logging.AuditLoggerUtil;
-import se.util.eif.logging.EifMetaData;
-import se.util.eif.logging.SystemLoggerUtil;
-
 /**
  * @author drtobbe
  */
 public class EifLoggerUtilTest {
-    private static Logger log = LoggerFactory.getLogger(EifLoggerUtilTest.class);
-    private static Logger logse = LoggerFactory.getLogger("silence");
+    private static AuditLogger alog = AuditLoggerUtil.getLogger(EifLoggerUtilTest.class);
+    private static Logger logse = LoggerFactory.getLogger(EifLoggerUtilTest.class);
     private EifMetaData metaData;
 
     @Before
@@ -31,30 +27,30 @@ public class EifLoggerUtilTest {
 
     @Test
     public void test() {
-        AuditLoggerUtil.infoBegin(log, "Begin testing auditlog", metaData);
-        AuditLoggerUtil.infoEnd(log, "End testing auditlog");
+        alog.infoBegin("Begin testing auditlog", metaData);
+        alog.infoEnd("End testing auditlog");
     }
 
     @Test
     public void testException() {
-        SystemLoggerUtil.application(log, "This is a info", metaData);
-        SystemLoggerUtil.error(log, "This is a error", new Exception("This is a Exception message"));
+        SystemLoggerUtil.application(logse, "This is a info", metaData);
+        SystemLoggerUtil.error(logse, "This is a error", new Exception("This is a Exception message"));
     }
 
     @Test
     public void testError() {
-        AuditLoggerUtil.infoBegin(log, "Begin testing", metaData);
-        AuditLoggerUtil.error(log, "This is a error", new Exception("This is a Exception message"));
+        alog.infoBegin("Begin testing", metaData);
+        alog.error("This is a error", new Exception("This is a Exception message"));
     }
 
     @Test
     public void testLoading() throws Exception {
-        AuditLoggerUtil.infoBegin(logse, "Begin testing auditlog", metaData);
+        alog.infoBegin("Begin testing auditlog", metaData);
         //
         long start = System.currentTimeMillis();
         int num = 10;
         for (int i = 0; i < num; i++) {
-            AuditLoggerUtil.info(logse, "This is a Audit info: " + i);
+            alog.info("This is a Audit info: " + i);
             SystemLoggerUtil.info(logse, "This is a System info: " + i);
         }
         System.out.println("###");
