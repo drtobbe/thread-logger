@@ -4,8 +4,6 @@ import java.util.Map;
 
 public interface AuditLogger {
 
-    public void useFormat(Format format);
-
     /**
     * AuditLog a message at the DEBUG level.
     *
@@ -93,4 +91,5 @@ public interface AuditLogger {
      */
     public void fatal(String msg);
 
+    public void useFormat(Format format);
 }
