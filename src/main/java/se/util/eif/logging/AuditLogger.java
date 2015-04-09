@@ -2,6 +2,9 @@ package se.util.eif.logging;
 
 import java.util.Map;
 
+/**
+ * @author drtobbe
+ */
 public interface AuditLogger {
 
     /**

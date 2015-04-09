@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import se.util.namespaces.eif.logging.auditlog._0001.AuditLog;
 import se.util.namespaces.eif.logging.systemlog._0001.SystemLog;
 
+/**
+ * @author drtobbe
+ */
 public class CSVWriter {
 
     public static String produceCsvData(AuditLog auditLog) throws IllegalAccessException, InvocationTargetException {

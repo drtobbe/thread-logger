@@ -1,5 +1,8 @@
 package se.util.eif.logging;
 
+/**
+ * @author drtobbe
+ */
 public interface SystemLogger {
 
     /**
