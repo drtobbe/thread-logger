@@ -1,0 +1,43 @@
+#Common:
+type => "microservice_runtime"
+@version => "1"
+@timestamp  (%d)
+
+appid ~ customer-v1-identity
+hostname ~ hostname
+transactionid (GUID)
+loginstanceid (GUID)
+operation (resource)
+method (%C)
+thread (%t)
+description (%m)
+loglevel (%p)
+
+#Exception:
+sourcelocation (%l)
+exceptionmessage
+exceptionstack
+rootcausemessage
+rootcausestack
+
+#Statistics OK:
+responsetime_ms
+upstream_response_ms
+max
+min
+mean
+skewness
+flatness
+meanrate
+oneminuterate
+fiveminuterate
+tenminuterate
+count
+50thpercentile
+99thpercentile
+
+#Statistics FAIL:
+fail_meanrate
+fail_oneminuterate
+fail_fiveminuterate
+fail_tenminuterate
